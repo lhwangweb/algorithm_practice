@@ -6,49 +6,36 @@ import math
 import random
 import unittest
 
-#
-# 比較用函數
-#
-def be_less(a, b):
-    """ 比較規則 func, 當 a<b 時回傳 True"""
-    return True if a < b else False
 
-
-def be_less_equal(a, b):
-    """ 比較規則 func, 當 a<=b 時回傳 True"""
-    return True if a <= b else False
-
-
-def be_bigger(a, b):
-    """ 比較規則 func, 當 a>b 時回傳 True"""
-    return True if a > b else False
-
-
-def be_bigger_equal(a, b):
-    """ 比較規則 func, 當 a>=b 時回傳 True"""
-    return True if a >= b else False
-
-
-def merge1(data, compare_funtion):
+def merge1(data, reverse):
     """
     合併排序
     每次 D&C 的子任務都使用新的記憶體空間，比較費空間，但是 Code 相對比較單純
 
     :param data: List, 要排序的 list
-    :param compare_rule_function: Func, 自訂的比較規則
-        根據 func(a,b) 行為來決定 ASC, DESC
-         - 當 a>b 時如果回傳 True -> DESC
-         - 反之，當 a<b 時 True -> ASC
+    :param reverse Boolean
+        True: DESC
+        False: ASC
     :return: list, 本階段完成的排序結果
     """
+    if not isinstance(reverse, bool):
+        raise Exception("arg 'reverse' should be boolean")
+
     length = len(data)
     if length == 0:
         return data
     elif length == 1:
         return data
     elif length == 2:
-        if not compare_funtion(data[0], data[1]):
-            data[0], data[1] = data[1], data[0]
+        if reverse:
+            # DESC
+            if data[0] < data[1]:
+                data[0], data[1] = data[1], data[0]
+        else:
+            # ASC
+            if data[0] > data[1]:
+                data[0], data[1] = data[1], data[0]
+
         return data
 
     # 走到這裡時，data 應該至少有 3 個 Elem
@@ -62,8 +49,8 @@ def merge1(data, compare_funtion):
     right_part = data[middle_idx:]
 
     # 1.1 Conquer - 繼續送進子任務
-    left_part = merge1(left_part, compare_funtion)
-    right_part = merge1(right_part, compare_funtion)
+    left_part = merge1(left_part, reverse)
+    right_part = merge1(right_part, reverse)
 
     # 2. 拿到結果，此時左右兩個部分應該已經是個別排序好的結果，現在準備合併
     left_length = len(left_part)
@@ -85,12 +72,22 @@ def merge1(data, compare_funtion):
             # 代表其中一個  已經走完了，所以先結束
             break
 
-        if compare_funtion(left_part[left_idx], right_part[right_idx]):
-            merged_result_list.append(left_part[left_idx])
-            left_idx += 1
+        if reverse:
+            # DESC
+            if left_part[left_idx] > right_part[right_idx]:
+                merged_result_list.append(left_part[left_idx])
+                left_idx += 1
+            else:
+                merged_result_list.append(right_part[right_idx])
+                right_idx += 1
         else:
-            merged_result_list.append(right_part[right_idx])
-            right_idx += 1
+            # ASC
+            if left_part[left_idx] < right_part[right_idx]:
+                merged_result_list.append(left_part[left_idx])
+                left_idx += 1
+            else:
+                merged_result_list.append(right_part[right_idx])
+                right_idx += 1
 
     # left_part right_part 長度、分佈都可能不同，有可能其中一個排完了，另一個還剩一截。
     # 範例 (假設排 ASC)
@@ -118,7 +115,7 @@ class TestMethod(unittest.TestCase):
     samples = []
 
     def TestUtil_for2(self, data, test_func, compare_func, order):
-        """ 測試 in-place 類型的 快速排序 function """
+        """ 測試 in-place 類型的 排序 function """
         print("  原本: %s" % str(data))
         test_func(data, compare_func)
         if order == "asc":
@@ -128,16 +125,12 @@ class TestMethod(unittest.TestCase):
             self.assertEqual(data, sorted(data, reverse=True))
             print("  DESC 結果 %s\n" % (data,))
 
-    def TestUtil_for1(self, data, test_func, compare_func, order):
-        """ 測試非 in-place 類型的 快速排序 function """
+    def TestUtil_for1(self, data, test_func, reverse):
+        """ 測試非 in-place 類型的 排序 function """
         print("  原本: %s" % str(data))
-        result = test_func(data, compare_func)
-        if order == "asc":
-            self.assertEqual(result, sorted(data, reverse=False))
-            print("  ASC 結果 %s\n" % (result,))
-        else:
-            self.assertEqual(result, sorted(data, reverse=True))
-            print("  DESC 結果 %s\n" % (result,))
+        result = test_func(data, reverse)
+        self.assertEqual(result, sorted(data, reverse=reverse))
+        print("  %s 結果 %s\n" % ("DESC" if reverse else "ASC", result))
 
     def setUp(self):
         """ 產生測試案例 list """
@@ -180,32 +173,15 @@ class TestMethod(unittest.TestCase):
             # 每一個案例都測過以下八種情境排列組合
             print("--- merge 1 第 %s 組測試案例 ---" % num)
             print(sample["name"])
-            print(" 測 < ")
             data = list(copy.deepcopy(sample["list"]))
-            self.TestUtil_for1(data=data, test_func=merge1, compare_func=be_less, order="asc")
-            print(" 測 <= ")
+            self.TestUtil_for1(data=data, test_func=merge1, reverse=False)
             data = list(copy.deepcopy(sample["list"]))
-            self.TestUtil_for1(data=data, test_func=merge1, compare_func=be_less_equal, order="asc")
-            print(" 測 > ")
-            data = list(copy.deepcopy(sample["list"]))
-            self.TestUtil_for1(data=data, test_func=merge1, compare_func=be_bigger, order="desc")
-            print(" 測 >= ")
-            data = list(copy.deepcopy(sample["list"]))
-            self.TestUtil_for1(data=data, test_func=merge1, compare_func=be_bigger_equal, order="desc")
-
+            self.TestUtil_for1(data=data, test_func=merge1, reverse=True)
             print("%s 反轉" % (sample["name"],))
-            print(" 測 < ")
             reversed_data = list(reversed(copy.deepcopy(sample["list"])))
-            self.TestUtil_for1(data=reversed_data, test_func=merge1, compare_func=be_less, order="asc")
-            print(" 測 <= ")
+            self.TestUtil_for1(data=reversed_data, test_func=merge1, reverse=False)
             reversed_data = list(reversed(copy.deepcopy(sample["list"])))
-            self.TestUtil_for1(data=reversed_data, test_func=merge1, compare_func=be_less_equal, order="asc")
-            print(" 測 > ")
-            reversed_data = list(reversed(copy.deepcopy(sample["list"])))
-            self.TestUtil_for1(data=reversed_data, test_func=merge1, compare_func=be_bigger, order="desc")
-            print(" 測 >= ")
-            reversed_data = list(reversed(copy.deepcopy(sample["list"])))
-            self.TestUtil_for1(data=reversed_data, test_func=merge1, compare_func=be_bigger_equal, order="desc")
+            self.TestUtil_for1(data=reversed_data, test_func=merge1, reverse=True)
             num += 1
 
 if __name__ == "__main__":
