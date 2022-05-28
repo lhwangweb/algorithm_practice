@@ -26,7 +26,7 @@
 有加入簡單的 test
 
 ## 合併排序 (Python 3)
-練習了  種形式：
+練習以下形式：
 1. 每次 D&C 切割的子任務都放到新的 list (記憶體) 內 (好處是很單純，很好寫。 壞處就是空間複雜度較大)
 
-有加入簡單的 test
+有加入簡單的 test，含 sort stability 的相關測試 (以 dict list 排序，並跟 bubble sort 的結果比，能 PASS assertEqual)
