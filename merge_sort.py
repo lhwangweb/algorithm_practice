@@ -31,35 +31,8 @@ def merge1(data, reverse, compare_field=None):
         return data
     elif length == 1:
         return data
-    elif length == 2:
-        if reverse:
-            # DESC
-            if isinstance(data[0], int):
-                # 如果 element 是 int, str
-                if data[0] < data[1]:
-                    data[0], data[1] = data[1], data[0]
-            elif isinstance(data[0], dict):
-                # 如果 element 是 dict
-                if data[0].get(compare_field) < data[1].get(compare_field):
-                    data[0], data[1] = data[1], data[0]
-            else:
-                pass
-        else:
-            # ASC
-            if isinstance(data[0], int):
-                # 如果 element 是 int, str
-                if data[0] > data[1]:
-                    data[0], data[1] = data[1], data[0]
-            elif isinstance(data[0], dict):
-                # 如果 element 是 dict
-                if data[0].get(compare_field) > data[1].get(compare_field):
-                    data[0], data[1] = data[1], data[0]
-            else:
-                pass
 
-        return data
-
-    # 走到這裡時，data 應該至少有 3 個 Elem
+    # 走到這裡時，data 應該至少有 2 個 elements
 
     # Divide - 二分切割
     middle_idx = length//2
@@ -84,19 +57,21 @@ def merge1(data, reverse, compare_field=None):
     left_idx = 0
     # 用於遍歷 right_part 的 index
     right_idx = 0
+
     while True:
         # 不停 loop 遍歷 left_part 與 right_part，每一輪工作如下：
         #   (1) 提取 Element 做比較： left_part 在 left_idx 的 Elem vs. 、右兩邊的 Elem
         #   (2) 符合條件(ASC 時，看誰小，反之亦然)者，送入 list
         #   (3) 之後那一邊的 index +=1 (例如： 如果是 left_part[left_idx] 送入 list，則 left_idx +=1)
+
+        # 結束條件
         if left_idx == left_length or right_idx == right_length:
             # 代表其中一個  已經走完了，所以先結束
             break
 
+        # 提取初要比較的兩個 element ，依 data type 不同，取法可能不同，目前有 int, dict
         left_elem = left_part[left_idx]
         right_elem = right_part[right_idx]
-
-        # 依 data type 取得要用來比較 ＆ 排序的值
         if isinstance(left_elem, int):
             left_elem_value = left_elem
             right_elem_value = right_elem
@@ -108,9 +83,8 @@ def merge1(data, reverse, compare_field=None):
 
         if reverse:
             # DESC
-
-            # 比較，決定哪一個 element 要 append 到 合併後的 list
             if left_elem_value > right_elem_value:
+                # 左邊較大，左邊 append 進去
                 merged_result_list.append(left_part[left_idx])
                 left_idx += 1
             elif left_elem_value == right_elem_value:
@@ -119,6 +93,7 @@ def merge1(data, reverse, compare_field=None):
                 merged_result_list.append(left_part[left_idx])
                 left_idx += 1
             elif left_elem_value < right_elem_value:
+                # 右邊較大，右邊 append 進去
                 merged_result_list.append(right_part[right_idx])
                 right_idx += 1
             else:
@@ -127,6 +102,7 @@ def merge1(data, reverse, compare_field=None):
         else:
             # ASC
             if left_elem_value < right_elem_value:
+                # 左邊較小，左邊 append 進去
                 merged_result_list.append(left_part[left_idx])
                 left_idx += 1
             elif left_elem_value == right_elem_value:
@@ -135,6 +111,7 @@ def merge1(data, reverse, compare_field=None):
                 merged_result_list.append(left_part[left_idx])
                 left_idx += 1
             elif left_elem_value > right_elem_value:
+                # 右邊較小，右邊 append 進去
                 merged_result_list.append(right_part[right_idx])
                 right_idx += 1
             else:
