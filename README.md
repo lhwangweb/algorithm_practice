@@ -12,7 +12,12 @@
  - push、pop 等動作遵守河內塔的規則，大的不能疊在小的上面。對應到 list 上， list index 越小代表柱子的越下方，換言之 list 永遠嚴格遞減排序(strictly DESC)
 
 ## 選擇排序 (Python 3)
- - 典型的選擇排序，for loop 從 N 個內挑出最大/最小，放到新 list，全部走過一次後，排序就完成了。
+1. 非 in-place
+ - for loop 從 N 個內挑出最大/最小，放到新 list，全部走過一次後，排序就完成了。
+
+2. in-place 形式
+
+TODO
 
 ## 遞迴 (Python 3)
  - 遞迴練習
