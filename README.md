@@ -32,3 +32,5 @@
 有加入簡單的 test，含 sort stability 的相關測試 (以 dict list 排序，並跟 bubble sort 的結果比，能 PASS assertEqual)
 
 ## Dijkstra (Python 3)
+參考 [此 Youtube 教學](https://www.youtube.com/watch?v=JLARzu7coEs) ，以教學案例的無向圖練習。
+
