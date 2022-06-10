@@ -39,3 +39,6 @@ TODO
 ## Dijkstra (Python 3)
 參考 [此 Youtube 教學](https://www.youtube.com/watch?v=JLARzu7coEs) ，以教學案例的無向圖練習。
 
+## 共用子字串 Common Substring
+1. 以 Dynamic Programing 找出兩個字串的最長共用字串 (the longest common substring)
+2. 以 Dynamic Programing 找出兩個字串的所有共用字串 (all common substrings)
