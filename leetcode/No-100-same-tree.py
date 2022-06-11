@@ -1,10 +1,22 @@
 """
-No. 100
+No. 100 Same Tree
 https://leetcode.com/problems/same-tree/
+
+做法簡述
+以 pre-order 方向， 根->左->右，不停地的比較兩個 Tree
+若都還有子節點，就放入遞迴繼續檢查。
+隨時發現不符，就 return False, 一直到全部檢查完成。
+
+成果
+Runtime: 31 ms Your runtime beats 89.44 % of python3 submissions.
+Memory Usage: 14 MB
+
+討論
+發現還不夠快，除了算法，推測之一是 if isinstance 比 if is None 慢，之後可以考慮改看看，看速度是否會提升。
+記憶體耗用好像有點相對高，可能是因為採用遞迴的關係，也許考慮改成非遞迴。
 """
 import unittest
-import typing
-
+from typing import Optional
 
 
 # Definition for a binary tree node.
@@ -15,7 +27,7 @@ class TreeNode:
         self.right = right
 
 class Solution:
-    def isSameTree(self, p: typing.Optional[TreeNode], q: typing.Optional[TreeNode]) -> bool:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
         # empty input protection
         if not isinstance(p, TreeNode) and not isinstance(q, TreeNode):
             return True
@@ -53,6 +65,7 @@ class Solution:
             return False
 
 class TestMethod(unittest.TestCase):
+
     test_cases = []
 
     def setUp(self):
