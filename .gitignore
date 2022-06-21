@@ -4,6 +4,12 @@
 # IDE, Editor
 .idea/*
 .vscode/*
+java_practice/.idea/*
+python_practice/.idea/*
+java_leetcode/.idea/*
+python_leetcode/.idea/*
+*.iml
+
 
 # Unit test / coverage reports
 htmlcov/

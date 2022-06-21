@@ -244,17 +244,17 @@ def quick3(data, compare_rule_function, lpdx=None, rpdx=None):
     # 範例 [8, 6, 1, 10, 5, 3, 9, 2, 7, 4] => 經過 for loop => [8, 6, 1, 5, 3, 2, 7, 4, 9, 10] ，結束時 exchange_idx 在 8 的位置
     #    從 index 1 ~ index 9 ，比 8 小的數 elem 共計 7 個，已經堆在 index 1 ~ 7
 
-    # 因為上面的 loop 採用『 交換完之後做 exchange_idx += 1』，因此結束時，會多 1，要扣回來，扣回來的那個 index 才是準備要跟 pivot 交換的 index
-    splitting_partition_index = exchange_idx - 1
-
-    # 跟 pivot 交換
-    data[lpdx], data[splitting_partition_index] = data[splitting_partition_index], data[lpdx]
-
     # 把 pivot (index lpdx) 跟 N 個 elem 的最右邊那個交換 (以上面註解的範例，就是 index 7 的那個 4)
     # 交換之後，就完成了目標 - N 個  <= pivot 的數字，都跑到 pivot 左邊了
     #
     # 範例  [8, 6, 1, 5, 3, 2, 7, 4, 9, 10] => 把 pivot 8 跟 index 7 的 elem 4 交換 => [4, 6, 1, 5, 3, 2, 7, 8, 9, 10]
     #    此時，可以看到已經完成這個階段的工作， 8 左邊的 elem <= 8， 右邊的 > 8
+
+    # 因為上面的 loop 採用『 交換完之後做 exchange_idx += 1』，因此結束時，會多 1，要扣回來，扣回來的那個 index 才是準備要跟 pivot 交換的 index
+    splitting_partition_index = exchange_idx - 1
+
+    # 跟 pivot 交換
+    data[lpdx], data[splitting_partition_index] = data[splitting_partition_index], data[lpdx]
 
     # 接下來做 D&C ，以中間的值為切分點，切成左右兩個子任務
     # 範例 [4, 6, 1, 5, 3, 2, 7 ], [8],  [9, 10]
