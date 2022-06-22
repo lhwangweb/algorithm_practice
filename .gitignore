@@ -9,7 +9,8 @@ python_practice/.idea/*
 java_leetcode/.idea/*
 python_leetcode/.idea/*
 *.iml
-
+java_practice/out/*
+pom.xml
 
 # Unit test / coverage reports
 htmlcov/
