@@ -1,5 +1,8 @@
+/**
+ * Hello World
+ */
+
 import java.util.Arrays;
-import java.util.Collections;
 
 public class hello_world {
     public static void main(String[] args) {
