@@ -10,6 +10,7 @@ java_leetcode/.idea/*
 python_leetcode/.idea/*
 *.iml
 java_practice/out/*
+java_leetcode/out/*
 pom.xml
 
 # Unit test / coverage reports
