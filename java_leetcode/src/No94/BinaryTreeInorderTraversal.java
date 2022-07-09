@@ -1,4 +1,4 @@
-/**
+package No94; /**
  * 94. Binary Tree Inorder Traversal
  * https://leetcode.com/problems/binary-tree-inorder-traversal/
  *
@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class No94BinaryTreeInorderTraversal {
+public class BinaryTreeInorderTraversal {
     public static void Main(String[] args) {
     }
 }

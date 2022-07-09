@@ -1,3 +1,5 @@
+package No94;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -5,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class No94BinaryTreeInorderTraversalTest {
+class BinaryTreeInorderTraversalTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
