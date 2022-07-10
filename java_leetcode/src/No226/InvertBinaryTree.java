@@ -32,19 +32,27 @@ class TreeNode {
 }
 
 class Solution {
+    /**
+     * 遞迴處理樹的 invert，遍歷方式採 Pre Order (根->左->右)
+     *
+     * @param node
+     */
     public void invert_traversal(TreeNode node) {
         if (node == null) {
             return;
         }
-        // Swap
+
+        // Swap 對每個 node 的兩個子節點交換
         TreeNode tmp_left = node.left;
         node.left = node.right;
         node.right = tmp_left;
 
+        // 對左邊遞迴下去，直到 leaf 為止
         if (node.left != null) {
             invert_traversal(node.left);
         }
 
+        // 對右邊遞迴下去，直到 leaf 為止
         if (node.right != null) {
             invert_traversal(node.right);
         }
