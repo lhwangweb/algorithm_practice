@@ -1,7 +1,14 @@
 /**
+ * 144. Binary Tree Preorder Traversal
+ * https://leetcode.com/problems/binary-tree-preorder-traversal/
  *
+ * Stack
  * Runtime: 1 ms, faster than 49.81% of Java online submissions for Binary Tree Preorder Traversal.
  * Memory Usage: 42.8 MB, less than 5.17% of Java online submissions for Binary Tree Preorder Traversal.
+ *
+ * Recursive
+ * Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Preorder Traversal.
+ * Memory Usage: 40.4 MB, less than 94.08% of Java online submissions for Binary Tree Preorder Traversal.
  */
 package No144;
 
@@ -32,7 +39,24 @@ class TreeNode {
 }
 
 class Solution {
-    public List<Integer> preorderTraversal(TreeNode root) {
+    public void traversal(TreeNode node, List<Integer> result) {
+        if (node != null) {
+            result.add(node.val);
+            traversal(node.left, result);
+            traversal(node.right, result);
+        }
+    }
+
+    public List<Integer> preorderTraversal_recursive(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<Integer>();
+        }
+
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        traversal(root, result);
+        return result;
+    }
+    public List<Integer> preorderTraversal_stack(TreeNode root) {
         List<Integer> traversal_result = new ArrayList<Integer>() {};
         Stack<TreeNode> traversal_stack = new Stack<TreeNode>();
 

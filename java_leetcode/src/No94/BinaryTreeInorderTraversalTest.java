@@ -31,7 +31,11 @@ class BinaryTreeInorderTraversalTest {
         //    /
         //   3
 
-        res = test_solution.inorderTraversal(a);
+        res = test_solution.inorderTraversal_stack(a);
+        System.out.println(Arrays.toString(res.toArray()));
+        assertArrayEquals(res.toArray(), new Integer[] {1, 3, 2});
+
+        res = test_solution.inorderTraversal_recursive(a);
         System.out.println(Arrays.toString(res.toArray()));
         assertArrayEquals(res.toArray(), new Integer[] {1, 3, 2});
 
@@ -46,7 +50,11 @@ class BinaryTreeInorderTraversalTest {
         //    /
         //   3
 
-        res = test_solution.inorderTraversal(a2);
+        res = test_solution.inorderTraversal_stack(a2);
+        System.out.println(Arrays.toString(res.toArray()));
+        assertArrayEquals(res.toArray(), new Integer[] {1, 2, 3, 4});
+
+        res = test_solution.inorderTraversal_recursive(a2);
         System.out.println(Arrays.toString(res.toArray()));
         assertArrayEquals(res.toArray(), new Integer[] {1, 2, 3, 4});
 
@@ -63,7 +71,11 @@ class BinaryTreeInorderTraversalTest {
         //  / \   /
         // 3   7 8
 
-        res = test_solution.inorderTraversal(b2);
+        res = test_solution.inorderTraversal_stack(b2);
+        System.out.println(Arrays.toString(res.toArray()));
+        assertArrayEquals(res.toArray(), new Integer[] {3,5,7,2,8,4});
+
+        res = test_solution.inorderTraversal_recursive(b2);
         System.out.println(Arrays.toString(res.toArray()));
         assertArrayEquals(res.toArray(), new Integer[] {3,5,7,2,8,4});
     }

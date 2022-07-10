@@ -1,10 +1,17 @@
-package No94; /**
+/**
  * 94. Binary Tree Inorder Traversal
  * https://leetcode.com/problems/binary-tree-inorder-traversal/
  *
+ * Stack
  * Runtime: 1 ms, faster than 48.73% of Java online submissions for Binary Tree Inorder Traversal.
  * Memory Usage: 42.3 MB, less than 49.14% of Java online submissions for Binary Tree Inorder Traversal.
+ *
+ * Recursive
+ * Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Inorder Traversal.
+ * Memory Usage: 42.5 MB, less than 30.10% of Java online submissions for Binary Tree Inorder Traversal.
  */
+
+package No94;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +40,29 @@ class TreeNode {
 }
 
 class Solution {
+    public void traversal(TreeNode node, List<Integer> result) {
+        if (node != null) {
+            traversal(node.left, result);
+            result.add(node.val);
+            traversal(node.right, result);
+        }
+    }
+
+    public List<Integer> inorderTraversal_recursive(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<Integer>();
+        }
+
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        traversal(root, result);
+        return result;
+    }
     /**
      * 以 Stack + while loop 完成 in order traversal
      * @param root
      * @return
      */
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public List<Integer> inorderTraversal_stack(TreeNode root) {
         List<Integer> traversal_result = new ArrayList<Integer>() {};
         Stack<TreeNode> traversal_stack = new Stack<TreeNode>();
 
