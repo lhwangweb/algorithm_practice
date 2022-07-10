@@ -15,3 +15,7 @@ https://leetcode.com/problems/binary-tree-preorder-traversal
 ## 145. Binary Tree Postorder Traversal
 
 https://leetcode.com/problems/binary-tree-postorder-traversal
+
+## 226. Invert Binary Tree
+
+https://leetcode.com/problems/invert-binary-tree
