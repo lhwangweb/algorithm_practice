@@ -9,7 +9,11 @@
  * 解法二
  * Runtime: 21 ms, faster than 6.84% of Java online submissions for Find Mode in Binary Search Tree.
  * Memory Usage: 46.2 MB, less than 45.36% of Java online submissions for Find Mode in Binary Search Tree.
- * 退步
+ * (退步)
+ *
+ * 修正掉多餘的 if ，改善不少
+ * Runtime: 3 ms, faster than 63.98% of Java online submissions for Find Mode in Binary Search Tree.
+ * Memory Usage: 45.8 MB, less than 63.72% of Java online submissions for Find Mode in Binary Search Tree.
  *
  */
 package No501;
@@ -159,10 +163,8 @@ class Solution {
             this.mode_count = this.current_number_count; // 更新目前 mode 的計次，以便之後繼續比較
             this.modes.add(this.current_number_value); // 加入 modes arraylist
         } else if (this.mode_count == this.current_number_count) {
-            // count 與之前另一個值的 count 一樣，可以
-            if (!this.modes.contains(this.current_number_value)) {
-                this.modes.add(this.current_number_value);
-            }
+            // count 與之前另一個值的 count 一樣，所以可以加入 arraylist
+            this.modes.add(this.current_number_value);
         }
 
         // 對右邊遞迴下去，直到 leaf 為止
