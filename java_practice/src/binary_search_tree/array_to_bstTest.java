@@ -1,3 +1,5 @@
+package binary_search_tree;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -209,6 +211,45 @@ class array_to_bstTest {
         System.out.println(String.format(" %s", Arrays.toString(post_traversal_result.toArray())));
         assertArrayEquals(post_traversal_result.toArray(), new Integer[] {2, 4, 1, 7, 7, 7, 8, 8, 8, 7, 12, 15, 14, 8, 5, 26, 49, 42, 75, 98, 83, 59, 33, 17});
 
+        Node n3 = new Node(3);
+        Node n7 = new Node(7);
+        n7.left_node = n3;
+        Node n2 = new Node(2);
+        Node n6 = new Node(6);
+        n6.right_node = n2;
+        Node n9 = new Node(9);
+        n9.left_node = n7;
+        n9.right_node = n6;
+
+        Node n1 = new Node(1);
+        Node n5 = new Node(5);
+        Node n4 = new Node(4);
+        n4.right_node = n1;
+        Node n8 = new Node(8);
+        n8.left_node = n5;
+        n8.right_node = n4;
+
+        Node root = new Node(10);
+        root.left_node = n9;
+        root.right_node = n8;
+
+//                   10
+//               /       \
+//            9            8
+//         /    \        /   \
+//        7      6      5      4
+//       /         \            \
+//      3           2            1
+
+        System.out.println(" -- Pre Order -- (by recursive)");
+        root.traversal_pre_order();
+        System.out.println("");
+        System.out.println(" -- In Order -- (by recursive)");
+        root.traversal_in_order();
+        System.out.println("");
+        System.out.println(" -- Post Order -- (by recursive)");
+        root.traversal_post_order();
+        System.out.println("");
     }
 
 

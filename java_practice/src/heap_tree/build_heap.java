@@ -1,3 +1,5 @@
+package heap_tree;
+
 /**
  * Build Heap 練習
  * 基本上是 follow https://www.geeksforgeeks.org/building-heap-from-array/ 的邏輯

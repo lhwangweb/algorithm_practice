@@ -1,6 +1,8 @@
-/**
- *  測試 build_heap
+package heap_tree; /**
+ *  測試 heap_tree.build_heap
  */
+
+import heap_tree.build_heap;
 
 import java.util.Arrays;
 

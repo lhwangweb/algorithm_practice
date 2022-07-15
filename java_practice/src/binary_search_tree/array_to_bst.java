@@ -1,3 +1,5 @@
+package binary_search_tree;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -119,9 +121,9 @@ public class array_to_bst {
     }
 
     /**
-     * Build a Binary Search Tree
+     * Build a Binary Search bst.Tree
      *
-     * @return Tree
+     * @return bst.Tree
      */
     public Tree build_bst() {
         Tree a_tree = new Tree();
@@ -133,7 +135,7 @@ public class array_to_bst {
 }
 
 /**
- * Binary Search Tree
+ * Binary Search bst.Tree
  */
 class Tree {
     /**
@@ -224,7 +226,7 @@ class Tree {
         // 左 -> 根 -> 右
         // 1. 是否有左？
         //    如果有左 -> 先把自己(根節點)的副本丟入 Stack，該副本刪除左節點(避免下次重複走訪左節點) -> 向左走，把左子節點當根 -> 回到步驟 1.
-        //    如果沒左 -> this Node value 加入 result -> 繼續執行 2.
+        //    如果沒左 -> this bst.Node value 加入 result -> 繼續執行 2.
         // 2. 是否有右？
         //    -> 如果有右 -> 向右走，把右子節點當根 -> 回到步驟 1.
         //    -> 如果沒右 -> 從 Stack 取出前一個根節點 -> 回到步驟 1.
@@ -288,7 +290,7 @@ class Tree {
         Stack<Node> traversal_stack = new Stack<Node>();
         // 左 -> 右 -> 根
         // 1. 自己是否 leaf ？
-        //     如果是 -> this Node value 加入 result -> 從 Stack 取下一個 -> 以該節點為根，回到步驟 1.
+        //     如果是 -> this bst.Node value 加入 result -> 從 Stack 取下一個 -> 以該節點為根，回到步驟 1.
         //     如果不是 leaf -> 先把自己(根節點, 刪除子節點的副本)、右，加入 Stack -> 繼續進行 2.
         // 2. 左節點是否存在？
         //      不存在 -> 從 Stack 取下一個 -> 以該節點為根，回到步驟 1.
@@ -420,7 +422,7 @@ class Node implements Cloneable {
     }
 
     /**
-     * Node Recursive Traversal
+     * bst.Node Recursive Traversal
      */
     public void traversal_in_order() {
 
