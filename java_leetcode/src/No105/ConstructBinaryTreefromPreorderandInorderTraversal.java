@@ -2,8 +2,14 @@
  * 105. Construct Binary Tree from Preorder and Inorder Traversal
  * https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
  *
+ * 第一次
  * Runtime: 311 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
  * Memory Usage: 118.2 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *
+ * 第二次 調整，至少 map 的部分不要做 argument 一直遞迴，可能是慢速＆多耗空間的兇手
+ * Runtime: 339 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ * Memory Usage: 117.8 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ * 沒有改善，不是遞迴傳 Map 的問題？  (也對，這是 mutable 的，傳遞進去不會增加 Stack )
  *
  */
 
@@ -38,6 +44,12 @@ class TreeNode {
 }
 
 class Solution {
+    /** 儲存每個 value 在 inorder 內的 index，方便之後快速取用
+     *   key: node value
+     *   value: 在 array 裡的 index
+     */
+    Map<Integer, Integer> inorder_index_map = new HashMap<Integer, Integer>();
+
     /**
      * 新增一個 Node - 嘗試把新節點要放到目前節點的左或右子節點
      * 要丟到左還是右，依據兩個節點的值在 In Order 內的相對位置判斷
@@ -46,14 +58,13 @@ class Solution {
      *
      * @param node  目標節點
      * @param new_node  要加入的新節點
-     * @param inorder_index_map 做好的 map, key 是 node 值, value 是該值的 index
      */
-    public void add_node(TreeNode node, TreeNode new_node, Map<Integer, Integer> inorder_index_map) {
+    public void add_node(TreeNode node, TreeNode new_node) {
         // 目前節點 在 inorder 內的 index
-        Integer node_index = inorder_index_map.get(node.val);
+        Integer node_index = this.inorder_index_map.get(node.val);
 
         // 新節點 在 inorder 內的 index
-        Integer new_node_index = inorder_index_map.get(new_node.val);
+        Integer new_node_index = this.inorder_index_map.get(new_node.val);
 
         // 比較兩個 index ，就可以得到兩者在 inorder 內的相對位置
         if (node_index > new_node_index) {
@@ -63,7 +74,7 @@ class Solution {
                 node.left = new_node;
             } else {
                 // 左邊已有子節點，遞迴，把左子節點重新當成目標節點，重新嘗試把新節點掛到該節點的下面
-                add_node(node.left, new_node, inorder_index_map);
+                add_node(node.left, new_node);
             }
 
         } else if (node_index < new_node_index) {
@@ -73,7 +84,7 @@ class Solution {
                 node.right = new_node;
             } else {
                 // 右邊已有子節點，遞迴，把右子節點重新當成目標節點，重新嘗試把新節點掛到該節點的下面
-                add_node(node.right, new_node, inorder_index_map);
+                add_node(node.right, new_node);
             }
         } else {
             // 相等時不考慮，不應該出現兩個 node 所處 index 相同
@@ -97,12 +108,9 @@ class Solution {
             return null;
         }
 
-        // 儲存每個 value 在 inorder 內的 index，方便之後快速取用
-        // key: node value
-        // value: 在 array 裡的 index
-        Map<Integer, Integer> inorder_index_map = new HashMap<Integer, Integer>();
+        // 填充 map
         for (int i = 0; i < inorder.length; i++) {
-            inorder_index_map.put(inorder[i], i);
+            this.inorder_index_map.put(inorder[i], i);
         }
 
         // root - Pre Order 的第一個 Element
@@ -116,7 +124,7 @@ class Solution {
         // 從 Pre Order 第二個開始依序新增進去
         for (int i = 1; i < preorder.length; i++) {
             // 每個新節點的加入，都先從 root 出發，如果需要會不斷遞迴向最適合的子節點前進
-            add_node(root, new TreeNode(preorder[i]), inorder_index_map);
+            add_node(root, new TreeNode(preorder[i]));
         }
 
         return root;
