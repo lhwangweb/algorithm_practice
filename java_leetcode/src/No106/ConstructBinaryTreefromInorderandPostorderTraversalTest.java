@@ -26,7 +26,7 @@ class ConstructBinaryTreefromInorderandPostorderTraversalTest {
         int[] postorder_1 = new int[] {9, 15, 7, 20, 3};
         int[] inorder_1 = new int[] {9, 3, 15, 20, 7};
 
-        TreeNode node_1 = a.buildTree(inorder_1, postorder_1);
+        TreeNode node_1 = a.buildTree_v1(inorder_1, postorder_1);
 
         ArrayList<Integer> postorder_1_result = new ArrayList<Integer>();
         ArrayList<Integer> inorder_1_result = new ArrayList<Integer>();
@@ -46,7 +46,7 @@ class ConstructBinaryTreefromInorderandPostorderTraversalTest {
         int[] postorder_2 = new int[]{26, 6, 30, 21, 9, 5, 17};
         int[] inorder_2 = new int[]{26, 6, 30, 17, 5, 9, 21};
 
-        TreeNode node_2 = a.buildTree(inorder_2, postorder_2);
+        TreeNode node_2 = a.buildTree_v1(inorder_2, postorder_2);
 
         ArrayList<Integer> postorder_2_result = new ArrayList<Integer>();
         ArrayList<Integer> inorder_2_result = new ArrayList<Integer>();
@@ -66,7 +66,7 @@ class ConstructBinaryTreefromInorderandPostorderTraversalTest {
         int[] postorder_3 = new int[]{1, 3, 4, 2, 7, 6, 5};
         int[] inorder_3 = new int[]{1, 2, 3, 4, 5, 6, 7};
 
-        TreeNode node_3 = a.buildTree(inorder_3, postorder_3);
+        TreeNode node_3 = a.buildTree_v1(inorder_3, postorder_3);
 
         ArrayList<Integer> postorder_3_result = new ArrayList<Integer>();
         ArrayList<Integer> inorder_3_result = new ArrayList<Integer>();

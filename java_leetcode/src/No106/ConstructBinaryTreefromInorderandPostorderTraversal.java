@@ -93,13 +93,23 @@ class Solution {
     }
 
     /**
-     * 建立 Tree
+     * 建立 Tree (方法一)
      *
-     * @param postorder
+     * 此方法是採用類似 Binary Search Tree 的 INSERT 方法
+     * 每次從 root Node 加入新的 child node，並依據次序關係決定右或左
+     *   1. 加入的順序
+     *      - 就是 Post Order 的 DESC 順序 (Post Order DESC 的順序就是一個從根向下的順序)
+     *   2. 決定是左或右子節點
+     *      - 在一般的 Binary Tree 建構過程中，決定左右的是 Node Value 本身的大小關係
+     *      - 在這裡的話，則依據 InOrder 的次序 (因為 InOrder 的次序本身就代表了相對在左或者相對在右)
+     *
+     * 時間複雜度應該是 N log N - 新增 N 個節點 * 每次新增預期跑 log N 次
+     *
      * @param inorder
+     * @param postorder
      * @return
      */
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
+    public TreeNode buildTree_v1(int[] inorder, int[] postorder) {
         // 有任一 array 為空
         if (postorder.length <= 0 || inorder.length <= 0) {
             return null;
@@ -125,6 +135,19 @@ class Solution {
         }
 
         return root;
+    }
+
+    /**
+     *  建立 Tree (方法二)
+     *
+     *  由於原本想的方法經 Leetcode submission 檢驗，很慢，參考了 Leetcode 較快的 Solution，練習一次
+     *
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree_v2(int[] preorder, int[] inorder) {
+
     }
 
     /**

@@ -28,7 +28,7 @@ class ConstructBinaryTreefromPreorderandInorderTraversalTest {
         int[] preorder_1 = new int[]{3, 9, 20, 15, 7};
         int[] inorder_1 = new int[]{9, 3, 15, 20, 7};
 
-        TreeNode node_1 = a.buildTree(preorder_1, inorder_1);
+        TreeNode node_1 = a.buildTree_v1(preorder_1, inorder_1);
 
         ArrayList<Integer> preorder_1_result = new ArrayList<Integer>();
         ArrayList<Integer> inorder_1_result = new ArrayList<Integer>();
@@ -49,7 +49,7 @@ class ConstructBinaryTreefromPreorderandInorderTraversalTest {
         int[] preorder_2 = new int[]{10, 9, 7, 3, 6, 2, 8, 5, 4, 1};
         int[] inorder_2 = new int[]{3, 7, 9, 6, 2, 10, 5, 8, 4, 1};
 
-        TreeNode node_2 = a.buildTree(preorder_2, inorder_2);
+        TreeNode node_2 = a.buildTree_v1(preorder_2, inorder_2);
 
         ArrayList<Integer> preorder_2_result = new ArrayList<Integer>();
         ArrayList<Integer> inorder_2_result = new ArrayList<Integer>();
@@ -70,7 +70,7 @@ class ConstructBinaryTreefromPreorderandInorderTraversalTest {
         int[] preorder_3 = new int[]{5, 2, 1, 4, 3, 6, 7};
         int[] inorder_3 = new int[]{1, 2, 3, 4, 5, 6, 7};
 
-        TreeNode node_3 = a.buildTree(preorder_3, inorder_3);
+        TreeNode node_3 = a.buildTree_v1(preorder_3, inorder_3);
 
         ArrayList<Integer> preorder_3_result = new ArrayList<Integer>();
         ArrayList<Integer> inorder_3_result = new ArrayList<Integer>();
