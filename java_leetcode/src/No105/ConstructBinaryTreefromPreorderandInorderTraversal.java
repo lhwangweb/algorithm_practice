@@ -2,15 +2,23 @@
  * 105. Construct Binary Tree from Preorder and Inorder Traversal
  * https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal
  *
- * 第一次
- * Runtime: 311 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
- * Memory Usage: 118.2 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ * 第一次 buildTree_v1
+ *  結果
+ *   Runtime: 311 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *   Memory Usage: 118.2 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
  *
- * 第二次 調整，至少 map 的部分不要做 argument 一直遞迴，可能是慢速＆多耗空間的兇手
- * Runtime: 339 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
- * Memory Usage: 117.8 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
- * 沒有改善，不是遞迴傳 Map 的問題？  (也對，這是 mutable 的，傳遞進去不會增加 Stack )
- *
+ * 第二次 buildTree_v1
+ *  調整
+ *   嘗試改 map 的部分不要做 argument 一直遞迴，可能是慢速＆多耗空間的兇手
+ *  結果
+ *   Runtime: 339 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *   Memory Usage: 117.8 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ * 沒有改善，不是遞迴傳 Map 的問題？  (也對，這是 mutable 的，傳遞進去不會增加 Stack 的負擔 )
+ *ˋ
+ * 第三次 buildTree_v2
+ *  調整演算法，運用 preorder in order 的特性，遞迴的向子樹方向拆解，等遞迴結束條件達成時，即代表拆解到 leaf，之後開始 return 時即開始建構樹
+ *   Runtime: 4 ms, faster than 64.77% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *   Memory Usage: 45 MB, less than 21.89% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
  */
 
 package No105;
@@ -49,6 +57,10 @@ class Solution {
      *   value: 在 array 裡的 index
      */
     Map<Integer, Integer> inorder_index_map = new HashMap<Integer, Integer>();
+
+    int[] preorder;
+
+    int[] inorder;
 
     /**
      * 新增一個 Node - 嘗試把新節點要放到目前節點的左或右子節點
@@ -144,7 +156,11 @@ class Solution {
     /**
      *  建立 Tree (方法二)
      *
-     *  由於原本想的方法經 Leetcode submission 檢驗，很慢，參考了 Leetcode 較快的 Solution，練習一次
+     *  由於原本想的方法經 Leetcode submission 檢驗，很慢，參考了 Leetcode 較快的 Solution
+     *  又參考這個 Youtube 影片 https://www.youtube.com/watch?v=5lWJpTEnyow
+     *  所以再次練習一下
+     *
+     *  原則上不必參考
      *
      * @param preorder
      * @param inorder
@@ -152,7 +168,89 @@ class Solution {
      */
     public TreeNode buildTree_v2(int[] preorder, int[] inorder) {
 
+        // 有任一 array 為空
+        if (preorder.length <= 0 || inorder.length <= 0) {
+            return null;
+        }
+
+        // 長度不符
+        if (preorder.length != inorder.length) {
+            return null;
+        }
+
+        // 填充 map
+        for (int i = 0; i < inorder.length; i++) {
+            this.inorder_index_map.put(inorder[i], i);
+        }
+
+
+        // 放到
+        this.inorder = inorder;
+        this.preorder = preorder;
+
+        TreeNode node = build_tree(0, preorder.length-1, 0, inorder.length - 1);
+
+        return node;
     }
+
+    /**
+     *
+     * @param preorder_start preorder 開始
+     * @param preorder_end   preorder 結束
+     * @param inorder_start
+     * @param inorder_end
+     * @return
+     */
+    public TreeNode build_tree(int preorder_start, int preorder_end, int inorder_start, int inorder_end) {
+        if (preorder_start > preorder_end || inorder_start > inorder_end || preorder_start < 0 || preorder_end < 0 || inorder_start < 0 || inorder_end < 0) {
+            // 各個起訖 index 不可能出現 開始比結束大也不可能為負數。
+            return null;
+        }
+
+        // preorder 的第一個就是這棵樹的頂點
+        int this_node_value = this.preorder[preorder_start]; // Node Value
+        TreeNode this_node = new TreeNode(this_node_value);
+
+        if (preorder_start == preorder_end) {
+            // 此時只有 1 個 element，故直接 return
+            return this_node;
+        }
+
+        int index_in_inorder = this.inorder_index_map.get(this_node_value); // 此 Value 在 inorder 內的 Index
+
+        // inorder array 分布：  [ ...左子樹... ][root][ ...右子樹... ]
+        // inorder 的左子樹
+        int left_inorder_start = inorder_start; // inorder 的左子樹起點
+        int left_inorder_end = index_in_inorder - 1; // inorder 的左子樹終點
+        int left_length = index_in_inorder - inorder_start; // 左子樹長度
+
+        // inorder 的右子樹
+        int right_inorder_start = index_in_inorder + 1; // inorder 的右子樹起點
+        int right_inorder_end = inorder_end; // inorder 的右子樹終點
+
+
+        // preorder array 分布：  [root][ ...左子樹... ][ ...右子樹... ]
+        int left_preorder_start = preorder_start + 1; // preorder 中的左子樹起點
+        int left_preorder_end = left_preorder_start + left_length - 1;  // preorder 中的左子樹的終點， 用上面 inorder 的左子樹長度推得  '起點index' + 'length' - 1 = '終點index'
+
+        int right_preorder_start = left_preorder_end + 1; // preorder 的右子樹起點
+        int right_preorder_end = preorder_end; // preorder 的右子樹起點
+
+        // 遞迴建構左子樹 (使用上面計算出來的 左子樹 的 起迄 index)
+        TreeNode left_node = build_tree(left_preorder_start, left_preorder_end, left_inorder_start, left_inorder_end);
+        if (left_node != null) {
+            this_node.left = left_node;
+        }
+
+        // 遞迴建構右子樹 (使用上面計算出來的 右子樹 的 起迄 index)
+        TreeNode right_node = build_tree(right_preorder_start, right_preorder_end, right_inorder_start, right_inorder_end);
+        if (right_node != null) {
+            this_node.right = right_node;
+        }
+
+        return this_node;
+    }
+
 
     /**
      * Pre Order Traversal (驗算用)
