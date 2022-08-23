@@ -13,12 +13,24 @@
  *  結果
  *   Runtime: 339 ms, faster than 5.04% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
  *   Memory Usage: 117.8 MB, less than 5.01% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
- * 沒有改善，不是遞迴傳 Map 的問題？  (也對，這是 mutable 的，傳遞進去不會增加 Stack 的負擔 )
+ *  檢討
+ *   沒有改善，不是遞迴傳 Map 的問題？  (也對，這是 mutable 的，傳遞進去不會增加 Stack 的負擔 )
  *ˋ
  * 第三次 buildTree_v2
- *  調整演算法，運用 preorder in order 的特性，遞迴的向子樹方向拆解，等遞迴結束條件達成時，即代表拆解到 leaf，之後開始 return 時即開始建構樹
+ *  調整
+ *   修改演算法，運用 preorder in order 的特性，遞迴的向子樹方向拆解，等遞迴結束條件達成時，即代表拆解到 leaf，之後開始 return 時即開始建構樹
+ *  結果
  *   Runtime: 4 ms, faster than 64.77% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
  *   Memory Usage: 45 MB, less than 21.89% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *
+ * 第四次 buildTree_v2
+ *  調整
+ *    移除冗余 if、減少一些暫存用的變數數量 (可以參考此次 commit)
+ *  結果
+ *    Runtime: 3 ms, faster than 88.26% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *    Memory Usage: 43.9 MB, less than 76.73% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *  檢討
+ *    非常訝異，只是改動一些冗余動作，相對分數就跳躍這麼多 (可以參考此次 commit)
  */
 
 package No105;
@@ -167,14 +179,8 @@ class Solution {
      * @return
      */
     public TreeNode buildTree_v2(int[] preorder, int[] inorder) {
-
-        // 有任一 array 為空
-        if (preorder.length <= 0 || inorder.length <= 0) {
-            return null;
-        }
-
-        // 長度不符
-        if (preorder.length != inorder.length) {
+        // 有任一 array 為空 or 長度不符
+        if (preorder.length <= 0 || inorder.length <= 0 || preorder.length != inorder.length) {
             return null;
         }
 
@@ -182,7 +188,6 @@ class Solution {
         for (int i = 0; i < inorder.length; i++) {
             this.inorder_index_map.put(inorder[i], i);
         }
-
 
         // 放到
         this.inorder = inorder;
@@ -224,29 +229,15 @@ class Solution {
         int left_inorder_end = index_in_inorder - 1; // inorder 的左子樹終點
         int left_length = index_in_inorder - inorder_start; // 左子樹長度
 
-        // inorder 的右子樹
-        int right_inorder_start = index_in_inorder + 1; // inorder 的右子樹起點
-        int right_inorder_end = inorder_end; // inorder 的右子樹終點
-
-
         // preorder array 分布：  [root][ ...左子樹... ][ ...右子樹... ]
         int left_preorder_start = preorder_start + 1; // preorder 中的左子樹起點
         int left_preorder_end = left_preorder_start + left_length - 1;  // preorder 中的左子樹的終點， 用上面 inorder 的左子樹長度推得  '起點index' + 'length' - 1 = '終點index'
 
-        int right_preorder_start = left_preorder_end + 1; // preorder 的右子樹起點
-        int right_preorder_end = preorder_end; // preorder 的右子樹起點
-
         // 遞迴建構左子樹 (使用上面計算出來的 左子樹 的 起迄 index)
-        TreeNode left_node = build_tree(left_preorder_start, left_preorder_end, left_inorder_start, left_inorder_end);
-        if (left_node != null) {
-            this_node.left = left_node;
-        }
+        this_node.left = build_tree(left_preorder_start, left_preorder_end, left_inorder_start, left_inorder_end);
 
         // 遞迴建構右子樹 (使用上面計算出來的 右子樹 的 起迄 index)
-        TreeNode right_node = build_tree(right_preorder_start, right_preorder_end, right_inorder_start, right_inorder_end);
-        if (right_node != null) {
-            this_node.right = right_node;
-        }
+        this_node.right = build_tree(left_preorder_end + 1, preorder_end, index_in_inorder + 1, inorder_end);
 
         return this_node;
     }
