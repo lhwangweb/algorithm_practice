@@ -44,7 +44,7 @@
  *
  * 第六次
  *   沒有改變，條件與上次一樣，再 submit 一次，結果一樣
- * 
+ *
  *  第七次
  *   調整
  *     只有微幅調整一兩個變數，嘗試移除 '看起來' 比較冗余的變數
@@ -55,6 +55,14 @@
  *   檢討
  *    記憶體節省上好像有一點幫助了，但速度卻被拖慢，仍是 4ms，無法達到原本的 3ms
  *
+ *  第八次
+ *   調整
+ *     恢復到第四次的版本，取消後面嘗試的記憶體優化嘗試
+ *   結果
+ *     Runtime: 2 ms, faster than 98.38% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *     Memory Usage: 41.9 MB, less than 94.27% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *   檢討
+ *     有點奇怪，怎麼會突然速度跟記憶體用量又進步這麼多，明明跟第四次是一樣的
  */
 
 package No105;
@@ -249,17 +257,16 @@ class Solution {
 
         // inorder array 分布：  [ ...左子樹... ][root][ ...右子樹... ]
         // inorder 的左子樹
-        // int left_inorder_start = inorder_start; // inorder 的左子樹起點
+        int left_inorder_start = inorder_start; // inorder 的左子樹起點
         int left_inorder_end = index_in_inorder - 1; // inorder 的左子樹終點
-        // int left_length = index_in_inorder - inorder_start; // 左子樹長度
+        int left_length = index_in_inorder - inorder_start; // 左子樹長度
 
         // preorder array 分布：  [root][ ...左子樹... ][ ...右子樹... ]
         int left_preorder_start = preorder_start + 1; // preorder 中的左子樹起點
-        int left_preorder_end = left_preorder_start + index_in_inorder - inorder_start - 1;  // preorder 中的左子樹的終點， 用上面 inorder 的左子樹長度推得  '起點index' + 'length' - 1 = '終點index'
-
+        int left_preorder_end = left_preorder_start + left_length - 1;  // preorder 中的左子樹的終點， 用上面 inorder 的左子樹長度推得  '起點index' + 'length' - 1 = '終點index'
 
         // 遞迴建構左子樹 (使用上面計算出來的 左子樹 的 起迄 index)
-        this_node.left = build_tree(left_preorder_start, left_preorder_end, inorder_start, left_inorder_end);
+        this_node.left = build_tree(left_preorder_start, left_preorder_end, left_inorder_start, left_inorder_end);
 
         // 遞迴建構右子樹 (使用上面計算出來的 右子樹 的 起迄 index)
         this_node.right = build_tree(left_preorder_end + 1, preorder_end, index_in_inorder + 1, inorder_end);
