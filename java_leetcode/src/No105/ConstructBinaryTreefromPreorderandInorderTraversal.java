@@ -41,6 +41,20 @@
  *
  *  檢討
  *   好像沒有太大幫助，應該是因為即使沒有指派獨立變數，要把數字塞進遞迴的 argument 也是需要記憶體空間的，所以不必過度刪減
+ *
+ * 第六次
+ *   沒有改變，條件與上次一樣，再 submit 一次，結果一樣
+ * 
+ *  第七次
+ *   調整
+ *     只有微幅調整一兩個變數，嘗試移除 '看起來' 比較冗余的變數
+ *   結果
+ *    Runtime: 4 ms, faster than 64.77% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *    Memory Usage: 44.4 MB, less than 51.20% of Java online submissions for Construct Binary Tree from Preorder and Inorder Traversal.
+ *
+ *   檢討
+ *    記憶體節省上好像有一點幫助了，但速度卻被拖慢，仍是 4ms，無法達到原本的 3ms
+ *
  */
 
 package No105;
@@ -233,25 +247,22 @@ class Solution {
 
         int index_in_inorder = this.inorder_index_map.get(this_node_value); // 此 Value 在 inorder 內的 Index
 
-        // 按照這個分佈，準備遞迴切割兩個 array
         // inorder array 分布：  [ ...左子樹... ][root][ ...右子樹... ]
+        // inorder 的左子樹
+        // int left_inorder_start = inorder_start; // inorder 的左子樹起點
+        int left_inorder_end = index_in_inorder - 1; // inorder 的左子樹終點
+        // int left_length = index_in_inorder - inorder_start; // 左子樹長度
+
         // preorder array 分布：  [root][ ...左子樹... ][ ...右子樹... ]
+        int left_preorder_start = preorder_start + 1; // preorder 中的左子樹起點
+        int left_preorder_end = left_preorder_start + index_in_inorder - inorder_start - 1;  // preorder 中的左子樹的終點， 用上面 inorder 的左子樹長度推得  '起點index' + 'length' - 1 = '終點index'
+
 
         // 遞迴建構左子樹 (使用上面計算出來的 左子樹 的 起迄 index)
-        this_node.left = build_tree(
-            preorder_start + 1,
-            preorder_start + 1 + index_in_inorder - inorder_start - 1,
-            inorder_start,
-            index_in_inorder - 1
-        );
+        this_node.left = build_tree(left_preorder_start, left_preorder_end, inorder_start, left_inorder_end);
 
         // 遞迴建構右子樹 (使用上面計算出來的 右子樹 的 起迄 index)
-        this_node.right = build_tree(
-preorder_start + 1 + index_in_inorder - inorder_start,
-            preorder_end,
-            index_in_inorder + 1,
-            inorder_end
-        );
+        this_node.right = build_tree(left_preorder_end + 1, preorder_end, index_in_inorder + 1, inorder_end);
 
         return this_node;
     }
