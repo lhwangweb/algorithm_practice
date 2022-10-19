@@ -18,6 +18,12 @@ import java.util.Collections;
  *     Runtime: 83 ms, faster than 5.14% of Java online submissions for Koko Eating Bananas.
  *     Memory Usage: 54.3 MB, less than 20.78% of Java online submissions for Koko Eating Bananas.
  *  檢討： 更快(可惜進步的百分比沒多少)，但減少迴圈中的除法還是非常必要的優化 但可能是因為需要不斷的轉型別，記憶體耗用更大了！
+ *
+ *  第四版 簡化初始的速度上限值猜法，改成固定值，不去找 piles 內的最大值
+ *     Runtime: 84 ms, faster than 5.14% of Java online submissions for Koko Eating Bananas.
+ *     Memory Usage: 53.6 MB, less than 71.80% of Java online submissions for Koko Eating Bananas.
+ *  檢討： 節省不少記憶體！
+ *
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -28,28 +34,19 @@ public class KokoEatingBananas {
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
 
-        int length = piles.length;
-
         // Constraints: 1 <= piles.length <= 10000, 所以不擔心 empty array
         // Constraints: piles.length <= h <= 10^9, 所以不用擔心 piles.length > h 這種違反題目宗旨的情境
 
-        Arrays.sort(piles);
-
         // 給定條件 length <= h
-
-        if (length == h) {
-            // piles length == h -> speedK 就是最大 pile
-            return piles[piles.length-1];
-        }
 
         // 總時數
         long total_cost_hour = 0; // Constraints: 每個 piles 最大可能到 10^9 ，相關 hour 也可能到 10^9 ，所以要用 long 才足夠計算，否則會破表
 
-        long speedK_upper_limit = piles[piles.length-1]; // 速度最大值（上限）
+        long speedK_upper_limit = 1000000000; // 速度最大值（上限）（直接給題目的最上限，而不要動態決定 piles 內的最大值）
         long speedK_lower_limit = 1; // 速度最小值（下限）
 
         // 迭代用的當下速度
-        long speedK = (long)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個;
+        long speedK;
 
         boolean the_same_hour_check = false; // 在相同時數下，是否要繼續 loop 找尋最小值
         long the_same_hour_previous_speedK = -1; // 在相同時數下，紀錄前一次的 speedK
