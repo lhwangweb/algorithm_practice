@@ -82,6 +82,40 @@ class KokoEatingBananasTest {
 //            put("Output", 14);
 //        }});
 
+        // 有一隻特高(1)
+        test_cases.add(new HashMap () {{
+            put("Input", new int [] {2431,14,15});
+            put("h", 145);
+            put("Output", 17);
+        }});
+        // 有一隻特高(2)
+        test_cases.add(new HashMap () {{
+            put("Input", new int [] {2431,14,15,16});
+            put("h", 146);
+            put("Output", 17);
+        }});
+        // 有一隻特高(3)
+        test_cases.add(new HashMap () {{
+            put("Input", new int [] {36,8,9});
+            put("h", 5);
+            put("Output", 12);
+        }});
+
+        // case 9 (LeetCode Example)
+        test_cases.add(new HashMap () {{
+            put("Input", new int [] {312884470,});
+            put("h", 968709470);
+            put("Output", 1);
+        }});
+
+        test_cases.add(new HashMap () {{
+            put("Input", new int [] {1000000000,1000000000});
+            put("h", 3);
+            put("Output", 1000000000);
+        }});
+
+
+
 
         for (HashMap test_case: test_cases) {
             int[] piles = (int[])test_case.get("Input");
