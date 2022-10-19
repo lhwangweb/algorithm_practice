@@ -49,7 +49,7 @@ class Solution {
         long speedK_lower_limit = 1; // 速度最小值（下限）
 
         // 迭代用的當下速度
-        long speedK = (speedK_upper_limit + speedK_lower_limit) / 2; // 只取整數，也就是說如果中央點是兩個，就取小的那個;
+        long speedK = (long)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個;
 
         boolean the_same_hour_check = false; // 在相同時數下，是否要繼續 loop 找尋最小值
         long the_same_hour_previous_speedK = -1; // 在相同時數下，紀錄前一次的 speedK
@@ -57,7 +57,7 @@ class Solution {
         // 迴圈去猜總時數
         while (true) {
 
-            speedK = (speedK_upper_limit + speedK_lower_limit) / 2; // 只取整數，也就是說如果中央點是兩個，就取小的那個
+            speedK = (long)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
 
             // 上下限相等 -> 收斂停止; 上限<下限 -> 超過，停止
             if (speedK_upper_limit <= speedK_lower_limit) {
