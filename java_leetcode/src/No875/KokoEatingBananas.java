@@ -14,6 +14,10 @@ import java.util.Collections;
  *    Memory Usage: 53.7 MB, less than 67.00% of Java online submissions for Koko Eating Bananas.
  *  檢討： binary search 還是太慢？ 有更好的演算法？ 還是 code 太冗？
  *
+ * 第三版 減少除法版
+ *     Runtime: 83 ms, faster than 5.14% of Java online submissions for Koko Eating Bananas.
+ *     Memory Usage: 54.3 MB, less than 20.78% of Java online submissions for Koko Eating Bananas.
+ *  檢討： 更快(可惜進步的百分比沒多少)，但減少迴圈中的除法還是非常必要的優化 但可能是因為需要不斷的轉型別，記憶體耗用更大了！
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
