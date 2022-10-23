@@ -28,6 +28,12 @@ import java.util.Collections;
  *     Runtime: 99 ms, faster than 5.06% of Java online submissions for Koko Eating Bananas.
  *     Memory Usage: 53.8 MB, less than 54.13% of Java online submissions for Koko Eating Bananas.
  *  檢討： 看起來沒有幫助，反而平均起來還比較慢
+ *
+ *  第六版 把一些不必要的 long 去掉
+ *    Runtime: 20 ms, faster than 83.20% of Java online submissions for Koko Eating Bananas.
+ *    Memory Usage: 53.2 MB, less than 79.83% of Java online submissions for Koko Eating Bananas.
+ *
+ *  檢討： 原本只是想看能否改善記憶體耗用，卻意外增進了速度
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -53,20 +59,20 @@ class Solution {
         // 總時數
         long total_cost_hour = 0; // Constraints: 每個 piles 最大可能到 10^9 ，相關 hour 也可能到 10^9 ，所以要用 long 才足夠計算，否則會破表
 
-        long speedK_upper_limit = max_banana_pile; // 速度最大值（上限）（直接給題目的最上限，而不要動態決定 piles 內的最大值）
-        long speedK_lower_limit = sum_banana_piles/h; // 速度最小值（下限）
+        int speedK_upper_limit = max_banana_pile; // 速度最大值（上限）（直接給題目的最上限，而不要動態決定 piles 內的最大值）
+        int speedK_lower_limit = (int)(sum_banana_piles/h); // 速度最小值（下限）
         if (speedK_lower_limit<1) {speedK_lower_limit=1;}
 
         // 迭代用的當下速度
-        long speedK;
+        int speedK;
 
         boolean the_same_hour_check = false; // 在相同時數下，是否要繼續 loop 找尋最小值
-        long the_same_hour_previous_speedK = -1; // 在相同時數下，紀錄前一次的 speedK
+        int the_same_hour_previous_speedK = -1; // 在相同時數下，紀錄前一次的 speedK
 
         // 迴圈去猜總時數
         while (true) {
 
-            speedK = (long)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
+            speedK = (int)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
 
             // 上下限相等 -> 收斂停止; 上限<下限 -> 超過，停止
             if (speedK_upper_limit <= speedK_lower_limit) {
@@ -150,7 +156,7 @@ class Solution {
             }
         }
 
-        return (int)speedK;
+        return speedK;
     }
 
     /**
@@ -160,9 +166,9 @@ class Solution {
      * @param speedK 吃香蕉速度
      * @return
      */
-    public long get_total_cost_hour(int[] piles, long speedK)
+    public int get_total_cost_hour(int[] piles, int speedK)
     {
-        long total_cost_hour = 0;
+        int total_cost_hour = 0;
 
         // 迴圈，累計吃光每一個 pile 所需時間
         for (int pile : piles) {
