@@ -80,7 +80,7 @@ class Solution {
         // 迴圈去猜總時數
         while (true) {
 
-            speedK = (speedK_upper_limit + speedK_lower_limit) / 2; // 只取整數，也就是說如果中央點是兩個，就取小的那個
+            speedK = (int)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
 
             // 上下限相等 -> 收斂停止; 上限<下限 -> 超過，停止
             if (speedK_upper_limit <= speedK_lower_limit) {
