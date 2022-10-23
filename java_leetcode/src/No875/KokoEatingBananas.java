@@ -34,6 +34,14 @@ import java.util.Collections;
  *    Memory Usage: 53.2 MB, less than 79.83% of Java online submissions for Koko Eating Bananas.
  *
  *  檢討： 原本只是想看能否改善記憶體耗用，卻意外增進了速度
+ *
+ *  第七次 試試看如果還是用除法
+ *
+ *    Runtime: 24 ms, faster than 72.64% of Java online submissions for Koko Eating Bananas.
+ *    Memory Usage: 53.3 MB, less than 79.83% of Java online submissions for Koko Eating Bananas.
+ *
+ *  檢討： 除法 vs 乘法＋int轉型 比較下，除法還是比較慢
+ *
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -72,7 +80,7 @@ class Solution {
         // 迴圈去猜總時數
         while (true) {
 
-            speedK = (int)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
+            speedK = (speedK_upper_limit + speedK_lower_limit) / 2; // 只取整數，也就是說如果中央點是兩個，就取小的那個
 
             // 上下限相等 -> 收斂停止; 上限<下限 -> 超過，停止
             if (speedK_upper_limit <= speedK_lower_limit) {
