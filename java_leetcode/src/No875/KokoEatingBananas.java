@@ -72,121 +72,32 @@ class Solution {
         if (speedK_lower_limit<1) {speedK_lower_limit=1;}
 
         // 迭代用的當下速度
-        int speedK;
-
-        boolean the_same_hour_check = false; // 在相同時數下，是否要繼續 loop 找尋最小值
-        int the_same_hour_previous_speedK = -1; // 在相同時數下，紀錄前一次的 speedK
+        int speedK = 1;
 
         // 迴圈去猜總時數
-        while (true) {
+        while (speedK_upper_limit > speedK_lower_limit) {
 
             speedK = (int)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
 
-            // 上下限相等 -> 收斂停止; 上限<下限 -> 超過，停止
-            if (speedK_upper_limit <= speedK_lower_limit) {
-                break;
+            // 迴圈，累計吃光每一個 pile 所需時間
+            total_cost_hour = 0;
+            for (int pile : piles) {
+                total_cost_hour += pile / speedK; // 吃完此 pile 的 hour 數
+                if (pile % speedK != 0) {
+                    total_cost_hour++; // 是否需要補 1
+                }
             }
 
-            total_cost_hour = get_total_cost_hour(piles, speedK);
-
-            // 是否滿足條件?
-            if (total_cost_hour > h) {
-                // 所費時間 超過 預計 -> 速度太慢要提升
-
-                // 進行增速
-                if (speedK_upper_limit - speedK_lower_limit == 1) {
-                    // 增速特殊案例修正
-                    speedK_lower_limit++; // 如果剛好只差一，原本的加速方式會剛好無法加速，改成直接讓
-                } else {
-                    // 正常增速
-                    speedK_lower_limit = speedK; // 把下限改成目前速度，下一個 loop 就會取 上限～目前速度 的中間值
-                }
-            } else if (total_cost_hour == h) {
-                // 符合時數 -> 但還不知道是不是同時數下的最低速度
-                if (the_same_hour_check == false) {
-                    // 初次遇到 total_cost_hour == h
-
-                    // 紀錄當下速度
-                    the_same_hour_check = true;
-                    the_same_hour_previous_speedK = speedK;
-
-                    // 進行減速
-                    speedK_upper_limit = speedK;
-
-                } else {
-                    // 不是初次遇到 total_cost_hour == h
-
-                    // 跟前一次的速度比，看看誰大誰小
-                    if (speedK < the_same_hour_previous_speedK) {
-                        // 新的速度更小 -> 正確方向！ 可以繼續減速
-
-                        // 把目前更小的速度存下來
-                        the_same_hour_previous_speedK = speedK;
-
-                        // 進行減速
-                        if (speedK_upper_limit - speedK_lower_limit == 1) {
-                            // 減速特殊案例修正
-                            speedK_upper_limit --; // 如果剛好只差一，原本的加速方式會剛好無法加速，改成直接讓
-                        } else {
-                            // 正常減速
-                            speedK_upper_limit = speedK;
-                        }
-                    } else if (speedK == the_same_hour_previous_speedK) {
-                        // 新速度與之前速度相同
-                        // 只可能是曾經跑過下方狀況一，又加回來，此時這個 speedK 是答案之一
-                        break;
-                    } else {
-                        // 新的速度變大了！ 所以是錯誤的方向，有可能要嘗試增速
-
-                        // 進行增速
-                        if (speedK_upper_limit - speedK_lower_limit == 1) {
-                            // 增速特殊案例修正
-                            speedK_lower_limit ++; // 如果剛好只差一，原本的加速方式會剛好無法加速，改成直接讓
-                        }  else {
-                            // 正常增速
-                            speedK_lower_limit = speedK;
-                        }
-
-                        // 變大的速度就不記錄到 the_same_hour_previous_speedK
-                    }
-                }
+            if (total_cost_hour <= h) {
+                speedK_upper_limit = speedK;
             } else {
-                // 所費時間短於預計 -> 速度太快，不符合盡量吃慢的目標，要減速
-
-                // 進行減速
-                if (speedK_upper_limit - speedK_lower_limit == 1) {
-                    // 減速特殊案例修正
-                    speedK_upper_limit --; // 如果剛好只差一，原本的加速方式會剛好無法加速，改成直接讓
-                } else {
-                    // 正常減速
-                    speedK_upper_limit = speedK; // 把上限改成目前速度，下一個 loop 就會取 目前速度～下限 的中間值
-                }
+                speedK_lower_limit = speedK + 1;
             }
+
         }
 
-        return speedK;
+        return speedK_lower_limit;
     }
 
-    /**
-     * 計算花費總時數
-     *
-     * @param piles piles
-     * @param speedK 吃香蕉速度
-     * @return
-     */
-    public int get_total_cost_hour(int[] piles, int speedK)
-    {
-        int total_cost_hour = 0;
-
-        // 迴圈，累計吃光每一個 pile 所需時間
-        for (int pile : piles) {
-            total_cost_hour += pile / speedK; // 吃完此 pile 的 hour 數
-            if (pile % speedK != 0) {
-                total_cost_hour++; // 是否需要補 1
-            }
-        }
-
-        return total_cost_hour;
-    }
 }
 
