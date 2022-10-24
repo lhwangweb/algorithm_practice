@@ -67,7 +67,7 @@ class Solution {
         // 總時數
         long total_cost_hour = 0; // Constraints: 每個 piles 最大可能到 10^9 ，相關 hour 也可能到 10^9 ，所以要用 long 才足夠計算，否則會破表
 
-        int speedK_upper_limit = max_banana_pile; // 速度最大值（上限）（直接給題目的最上限，而不要動態決定 piles 內的最大值）
+        int speedK_upper_limit = max_banana_pile; // 速度最大值（上限)
         int speedK_lower_limit = (int)(sum_banana_piles/h); // 速度最小值（下限）
         if (speedK_lower_limit<1) {speedK_lower_limit=1;}
 
