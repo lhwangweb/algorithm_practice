@@ -66,6 +66,13 @@ import java.util.Collections;
  *
  *  檢討： 哈哈哈哈～ 顯然不行，操作 mutable 的 Integer 可能還是比較耗費資源
  *
+ *  第十二次 維持 Integer 但不要型態轉換，為此需改用除法才能維持 int。
+ *    Runtime: 18 ms, faster than 88.85% of Java online submissions for Koko Eating Bananas.
+ *    Memory Usage: 43.2 MB, less than 91.89% of Java online submissions for Koko Eating Bananas.
+ *
+ *  檢討： 沒想到這樣竟然變快，也許 Integer mutable 雖然有省時間，但如果要轉換型態，反而多耗時
+ *
+ *  
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -106,7 +113,7 @@ class Solution {
         // 迴圈去猜總時數
         while (speedK_upper_limit > speedK_lower_limit) {
 
-            speedK = (int)(speedK_lower_limit + (speedK_upper_limit - speedK_lower_limit) * 0.5); // 避免溢位的寫法
+            speedK = (speedK_lower_limit + (speedK_upper_limit - speedK_lower_limit) / 2 ); // 避免溢位的寫法
 
             // 迴圈，累計吃光每一個 pile 所需時間
             total_cost_hour = 0;
