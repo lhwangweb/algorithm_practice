@@ -42,6 +42,11 @@ import java.util.Collections;
  *
  *  檢討： 除法 vs 乘法＋int轉型 比較下，除法還是比較慢
  *
+ *  第八次 參考了他人的寫法，比較漂亮一點的 binary search 寫法
+ *
+ *  Runtime: 27 ms, faster than 66.54% of Java online submissions for Koko Eating Bananas.
+ *  Memory Usage: 54.5 MB, less than 15.43% of Java online submissions for Koko Eating Bananas.
+ *
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -50,6 +55,11 @@ public class KokoEatingBananas {
 
 
 class Solution {
+    /*
+    * 參考 while loop binary search 的邊界問題
+    *   - https://www.geeksforgeeks.org/binary-search
+    *   - https://kkc.github.io/2019/03/28/learn-loop-invariant-from-binary-search/
+    * */
     public int minEatingSpeed(int[] piles, int h) {
         // Constraints: 1 <= piles.length <= 10000, 所以不擔心 empty array
         // Constraints: piles.length <= h <= 10^9, 所以不用擔心 piles.length > h 這種違反題目宗旨的情境
@@ -77,7 +87,7 @@ class Solution {
         // 迴圈去猜總時數
         while (speedK_upper_limit > speedK_lower_limit) {
 
-            speedK = (int)((speedK_upper_limit + speedK_lower_limit) * 0.5); // 只取整數，也就是說如果中央點是兩個，就取小的那個
+            speedK = (int)(speedK_lower_limit + (speedK_upper_limit - speedK_lower_limit) * 0.5); // 避免溢位的寫法
 
             // 迴圈，累計吃光每一個 pile 所需時間
             total_cost_hour = 0;
@@ -95,6 +105,8 @@ class Solution {
             }
 
         }
+
+        System.out.println(String.format("上:%s 下:%s Speed:%s", speedK_upper_limit, speedK_lower_limit, speedK));
 
         return speedK_lower_limit;
     }
