@@ -72,7 +72,11 @@ import java.util.Collections;
  *
  *  檢討： 沒想到這樣竟然變快，也許 Integer mutable 雖然有省時間，但如果要轉換型態，反而多耗時
  *
- *  
+ *  第十三次 按照前面測試，疑似之前寫的不漂亮版本更快，因此 找回來 並修改： (1) 不要 long (2) 改不會溢位寫法
+ *    Runtime: 21 ms, faster than 80.28% of Java online submissions for Koko Eating Bananas.
+ *    Memory Usage: 53.9 MB, less than 54.34% of Java online submissions for Koko Eating Bananas.
+ *
+ * 檢討： 好像... 差不多差不多
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -81,12 +85,16 @@ public class KokoEatingBananas {
 
 
 class Solution {
-    /*
-    * 參考 while loop binary search 的邊界問題
-    *   - https://www.geeksforgeeks.org/binary-search
-    *   - https://kkc.github.io/2019/03/28/learn-loop-invariant-from-binary-search/
-    * */
-    public int minEatingSpeed(int[] piles, int h) {
+    /**
+     *  參考 while loop binary search 的邊界問題
+     *   - https://www.geeksforgeeks.org/binary-search
+     *   - https://kkc.github.io/2019/03/28/learn-loop-invariant-from-binary-search/
+     *
+     * @param piles
+     * @param h
+     * @return
+     */
+    public int minEatingSpeed_pretty_binary_search(int[] piles, int h) {
         // Constraints: 1 <= piles.length <= 10000, 所以不擔心 empty array
         // Constraints: piles.length <= h <= 10^9, 所以不用擔心 piles.length > h 這種違反題目宗旨的情境
         // 給定條件 length <= h
@@ -135,6 +143,95 @@ class Solution {
         System.out.println(String.format("上:%s 下:%s Speed:%s", speedK_upper_limit, speedK_lower_limit, speedK));
 
         return speedK_lower_limit;
+    }
+
+
+    /**
+     * 找回先前版本，雖然不漂亮，但疑似可以比較快，演算法保留，但： (1) 不要 long (2) 改不會溢位寫法
+     *
+     * @param piles
+     * @param h
+     * @return
+     */
+    public int minEatingSpeed(int[] piles, int h) {
+        int max_banana_pile = -1;
+        long sum_banana_piles = 0;
+        for (int pile: piles) {
+            sum_banana_piles += pile;
+            if (max_banana_pile < pile) {
+                max_banana_pile = pile;
+            }
+        }
+
+        int total_cost_hour = 0;
+        int speedK_upper_limit = max_banana_pile;
+        int speedK_lower_limit = (int)(sum_banana_piles/h);
+        if (speedK_lower_limit<1) {speedK_lower_limit=1;}
+        int speedK;
+
+        boolean the_same_hour_check = false;
+        int the_same_hour_previous_speedK = -1;
+        while (true) {
+            speedK = (int)(speedK_lower_limit + (speedK_upper_limit - speedK_lower_limit) * 0.5);
+            if (speedK_upper_limit <= speedK_lower_limit) {
+                break;
+            }
+
+            total_cost_hour = get_total_cost_hour(piles, speedK);
+            if (total_cost_hour > h) {
+                if (speedK_upper_limit - speedK_lower_limit == 1) {
+                    speedK_lower_limit++;
+                } else {
+                    speedK_lower_limit = speedK;
+                }
+            } else if (total_cost_hour == h) {
+                if (the_same_hour_check == false) {
+                    the_same_hour_check = true;
+                    the_same_hour_previous_speedK = speedK;
+                    speedK_upper_limit = speedK;
+
+                } else {
+                    if (speedK < the_same_hour_previous_speedK) {
+                        the_same_hour_previous_speedK = speedK;
+                        if (speedK_upper_limit - speedK_lower_limit == 1) {
+                            speedK_upper_limit --;
+                        } else {
+                            speedK_upper_limit = speedK;
+                        }
+                    } else if (speedK == the_same_hour_previous_speedK) {
+                        break;
+                    } else {
+                        if (speedK_upper_limit - speedK_lower_limit == 1) {
+                            speedK_lower_limit ++;
+                        }  else {
+                            speedK_lower_limit = speedK;
+                        }
+
+                    }
+                }
+            } else {
+                if (speedK_upper_limit - speedK_lower_limit == 1) {
+                    speedK_upper_limit --;
+                } else {
+                    speedK_upper_limit = speedK;
+                }
+            }
+        }
+
+        return speedK;
+    }
+
+
+    public int get_total_cost_hour(int[] piles, int speedK)
+    {
+        int total_cost_hour = 0;
+        for (int pile : piles) {
+            total_cost_hour += pile / speedK;
+            if (pile % speedK != 0) {
+                total_cost_hour++;
+            }
+        }
+        return total_cost_hour;
     }
 
 }
