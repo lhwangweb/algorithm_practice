@@ -55,6 +55,11 @@ import java.util.Collections;
  *
  *  檢討：還是有稍微變慢
  *
+ *  第十次 把 total hour 的 long 也移除 (也把猜 init 加回來)
+ *     Runtime: 18 ms, faster than 88.85% of Java online submissions for Koko Eating Bananas.
+ *     Memory Usage: 43.3 MB, less than 86.09% of Java online submissions for Koko Eating
+ *  檢討： 顯示出 while loop 裡面，能不要用 long 就不要用，妨礙速度會很明顯 (但！！ 這件事得小心是 JAVA 特性，還是所有語言都這樣)
+ *
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -83,7 +88,7 @@ class Solution {
         }
 
         // 總時數
-        long total_cost_hour = 0; // Constraints: 每個 piles 最大可能到 10^9 ，相關 hour 也可能到 10^9 ，所以要用 long 才足夠計算，否則會破表
+        int total_cost_hour = 0; // Constraints: 每個 piles 最大可能到 10^9 ，相關 hour 也可能到 10^9 ，所以要用 long 才足夠計算，否則會破表
 
         int speedK_upper_limit = max_banana_pile; // 速度最大值（上限)
         int speedK_lower_limit = (int)(sum_banana_piles/h); // 速度最小值（下限）
