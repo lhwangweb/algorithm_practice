@@ -60,6 +60,12 @@ import java.util.Collections;
  *     Memory Usage: 43.3 MB, less than 86.09% of Java online submissions for Koko Eating
  *  檢討： 顯示出 while loop 裡面，能不要用 long 就不要用，妨礙速度會很明顯 (但！！ 這件事得小心是 JAVA 特性，還是所有語言都這樣)
  *
+ *  第十一次 思考 speed 為 int，每次複寫時可能因為 immutable 而慢，把它變成 Integer 看看
+ *    Runtime: 30 ms, faster than 61.89% of Java online submissions for Koko Eating Bananas.
+ *    Memory Usage: 54.1 MB, less than 32.43% of Java online submissions for Koko Eating Bananas.
+ *
+ *  檢討： 哈哈哈哈～ 顯然不行，操作 mutable 的 Integer 可能還是比較耗費資源
+ *
  */
 public class KokoEatingBananas {
     public static void Main(String[] args) {
@@ -95,7 +101,7 @@ class Solution {
         if (speedK_lower_limit<1) {speedK_lower_limit=1;}
 
         // 迭代用的當下速度
-        int speedK = 1;
+        Integer speedK = 1;
 
         // 迴圈去猜總時數
         while (speedK_upper_limit > speedK_lower_limit) {
