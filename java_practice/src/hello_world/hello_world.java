@@ -113,6 +113,14 @@ public class hello_world {
         String test_s2 = "Hi, " + "Mom!";
         System.out.println(test_s1 == test_s2); // 可以發現， test_s1 與 test_s2 內的參考是相同的值 (指向 heap 內相同位址)
 
+
+        // 測試溢位
+        int test_overflow_result_1 = (int) (2137483647 + ( 2137483647 - 7) / 2);
+        System.out.println(String.format("result 1: %s", test_overflow_result_1));
+
+        int test_overflow_result_2 = (2137483647 + 2137483647) / 2;
+        System.out.println(String.format("result 2: %s", test_overflow_result_2));
+
     }
 
     /**
