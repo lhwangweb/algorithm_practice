@@ -107,9 +107,12 @@ public class KokoEatingBananas {
 
 class Solution {
     /**
-     *  參考 while loop binary search 的邊界問題
-     *   - https://www.geeksforgeeks.org/binary-search
-     *   - https://kkc.github.io/2019/03/28/learn-loop-invariant-from-binary-search/
+     *  比較好的 binary search
+     *   - 參考
+     *     - LeetCode 較好的範例
+     *     - while loop binary search 的邊界問題
+     *       - https://www.geeksforgeeks.org/binary-search
+     *       - https://kkc.github.io/2019/03/28/learn-loop-invariant-from-binary-search/
      *
      * @param piles
      * @param h
