@@ -38,3 +38,11 @@ TODO
 ## 共用子字串 Common Substring
 1. 以 Dynamic Programing 找出兩個字串的最長共用字串 (the longest common substring)
 2. 以 Dynamic Programing 找出兩個字串的所有共用字串 (all common substrings)
+
+## 練習 Power Set
+
+以 backtracking
+
+## 練習 Permutation
+
+以 backtracking
